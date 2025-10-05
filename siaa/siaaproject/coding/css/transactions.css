@@ -1,0 +1,231 @@
+/* General Layout */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6; /* bg-gray-100 */
+}
+
+.dashboard-layout {
+    display: flex;
+    overflow-x: hidden; /* Fix for main layout overflow */
+}
+
+.sidebar {
+    width: 256px; /* w-64 */
+    background-color: #4338ca; /* bg-indigo-700 */
+    color: #d1d5db; /* text-gray-300 */
+    padding: 1rem; /* p-4 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 40;
+}
+
+.sidebar.show {
+    transform: translateX(0);
+}
+
+.sidebar-header {
+    padding: 1rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+}
+
+.sidebar-header a {
+    color: inherit;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+}
+
+.sidebar-nav li {
+    margin-bottom: 0.75rem;
+}
+
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 0.375rem;
+    transition: background-color 0.2s, color 0.2s, transform 0.2s ease-in-out;
+}
+
+.sidebar-nav a:hover {
+    background-color: #111827;
+    color: white;
+    transform: scale(1.03);
+}
+
+.sidebar-nav a.active {
+    background-color: #111827;
+    color: white;
+}
+
+.sidebar-nav a i {
+    width: 1.25rem;
+    margin-right: 0.75rem;
+    text-align: center;
+}
+
+.main-content {
+    margin-left: 0;
+    flex-grow: 1;
+    padding: 1.5rem;
+    transition: margin-left 0.3s ease-in-out;
+    min-width: 0; /* Prevents flex item from overflowing its container */
+}
+
+.main-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.sidebar-toggle {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #374151;
+    margin-right: 1rem;
+}
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 30;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.sidebar-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        transform: translateX(0);
+    }
+    .main-content {
+        margin-left: 256px;
+    }
+    .sidebar-toggle {
+        display: none;
+    }
+    .sidebar-overlay {
+        display: none;
+    }
+}
+
+/* Transaction Item Specifics */
+.transaction-item {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.transaction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.transaction-header:hover {
+    background-color: #f9fafb; /* bg-gray-50 */
+}
+
+.transaction-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* Slower, smoother animation */
+    padding: 0 1.5rem;
+}
+
+.transaction-item.open .transaction-details {
+    padding-bottom: 1rem;
+}
+
+/* Styles for the new details table */
+.details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+}
+.details-table th, .details-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb; /* gray-200 */
+}
+.details-table th {
+    background-color: #f9fafb; /* gray-50 */
+    font-weight: 600;
+    color: #4b5563; /* gray-600 */
+}
+.details-table td.text-right, .details-table th.text-right {
+    text-align: right;
+}
+.details-summary-row td {
+    font-weight: 600;
+}
+
+/* Responsive styles for the details table on mobile */
+@media (max-width: 640px) {
+    .details-table thead {
+        display: none; /* Hide table headers on mobile */
+    }
+    .details-table tbody, .details-table tr, .details-table td {
+        display: block;
+        width: 100%;
+    }
+    .details-table tr {
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .details-table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        text-align: right;
+    }
+    .details-table td::before {
+        content: attr(data-label); /* Use data-label for headers */
+        font-weight: 600;
+        text-align: left;
+        color: #4b5563;
+    }
+    .details-table tfoot td {
+        justify-content: flex-end; /* Align footer content to the right */
+    }
+    .details-table tfoot td[colspan="3"] {
+        justify-content: flex-end;
+    }
+    .details-table tfoot td[colspan="4"] {
+        padding-top: 1rem;
+    }
+}
+
+/* Prevent body scroll when sidebar is open on mobile */
+body.overflow-hidden {
+    overflow: hidden;
+}

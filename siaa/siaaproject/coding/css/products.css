@@ -1,0 +1,343 @@
+/* Base styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6;
+}
+.dashboard-layout {
+    display: flex;
+}
+.sidebar {
+    width: 256px;
+    background-color: #4338ca; /* bg-indigo-700 */
+    color: #d1d5db;
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 40;
+}
+.sidebar.show {
+    transform: translateX(0);
+}
+.sidebar-header {
+    padding: 1rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+}
+.sidebar-header a { color: inherit; text-decoration: none; display: flex; align-items: center; gap: 0.75rem; }
+.sidebar-nav { list-style: none; padding: 0; margin: 1rem 0 0; }
+.sidebar-nav li {
+    margin-bottom: 0.75rem; /* Add vertical space between items */
+}
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;    color: #ffffff;
+    text-decoration: none;
+    border-radius: 0.375rem;
+    transition: background-color 0.2s, color 0.2s, transform 0.2s ease-in-out;
+}
+.sidebar-nav a:hover { 
+    background-color: #111827; 
+    color: white; 
+    transform: scale(1.03); /* Add a subtle scale effect */
+}
+.sidebar-nav a.active { background-color: #111827; color: white; }
+.sidebar-nav a i { width: 1.25rem; margin-right: 0.75rem; text-align: center; }
+.main-content {
+    margin-left: 0;
+    flex-grow: 1;
+    padding: 0.5rem; /* Further reduced base padding for mobile */
+    transition: margin-left 0.3s ease-in-out;
+}
+.main-header { display: flex; align-items: center; margin-bottom: 1.5rem; }
+.sidebar-toggle { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #374151; margin-right: 1rem; }
+.sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 30; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+.sidebar-overlay.show { opacity: 1; visibility: visible; }
+@media (min-width: 1024px) { /* Match Tailwind's 'lg' breakpoint */
+    .sidebar { transform: translateX(0); }
+    .main-content { 
+        margin-left: 256px; 
+        padding: 1.5rem; /* Restore larger padding for desktop */
+    }
+    .sidebar-overlay { display: none; }
+}
+
+/* Utility Components */
+.stat-card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+}
+
+/* Page-specific styles */
+.product-photo {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 0.375rem;
+}
+
+/* --- ACTION BUTTON STYLES (IMPROVED) --- */
+.btn-action {
+    transition: background-color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-icon {
+    padding: 0.5rem;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 1rem;
+}
+
+.btn-edit {
+    color: #1e40af;
+    background-color: #bfdbfe;
+}
+.btn-edit:hover {
+    background-color: #111827; /* Near black */
+    color: #ffffff; /* White */
+}
+.btn-delete {
+    color: #991b1b;
+    background-color: #fecaca;
+}
+.btn-delete:hover {
+    background-color: #111827; /* Near black */
+    color: #ffffff; /* White */
+}
+
+.btn-restore {
+    color: #059669;
+    background-color: #d1fae5; /* green-100 */
+    transition: color 0.2s;
+}
+.btn-restore:hover {
+    background-color: #111827;
+    color: #ffffff;
+}
+
+/* NEW: Permanent Delete Button */
+.btn-delete-perm {
+    color: #ffffff;
+    background-color: #be123c; /* rose-700 */
+}
+.btn-delete-perm:hover {
+    background-color: #111827; /* Near black */
+    color: #ffffff; /* White */
+}
+
+/* --- END ACTION BUTTON STYLES --- */
+
+.notification {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 1000;
+}
+.notification.show {
+    opacity: 1;
+}
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    max-width: 400px;
+}
+.modal-content p {
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+/* NEW: Modal Button Styles for clarity/emphasis */
+.btn-modal-delete {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    color: white;
+    background-color: #dc2626;
+    transition: background-color 0.2s;
+}
+.btn-modal-delete:hover {
+    background-color: #b91c1c;
+}
+
+/* NEW: Permanent Delete Modal Button */
+.btn-modal-delete-perm {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    color: white;
+    background-color: #be123c; /* rose-700 */
+    transition: background-color 0.2s;
+}
+.btn-modal-delete-perm:hover { background-color: #9f1239; }
+
+/* NEW: Restore Modal Button */
+.btn-modal-restore {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 700; /* Bold text */
+    color: white;
+    background-color: #059669; /* green-600 */
+    border: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+.btn-modal-restore:hover {
+    background-color: #047857; /* darker green */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+}
+
+.btn-modal-cancel {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 600; /* Semibold */
+    /* Outlined button style */
+    color: #1f2937; /* gray-800 */
+    background-color: #e5e7eb; /* gray-200 */
+    border: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Subtle shadow */
+}
+.btn-modal-cancel:hover {
+    background-color: #d1d5db; /* gray-300 */
+}
+/* End NEW Modal Button Styles */
+
+
+/* Table styles */
+table th, table td {
+    padding: 0.75rem;
+    text-align: left;
+    vertical-align: middle;
+}
+table th {
+    font-weight: 600;
+    color: #4b5563;
+    background-color: #f9fafb;
+}
+
+/* --- CRITICAL FIX FOR SCROLLING TABLE --- */
+.inventory-scroll-container {
+    flex-grow: 1;
+    /* Set max-height to roughly 6-7 rows (approx 65px per row) before scrolling */
+    max-height: 450px;
+    overflow-y: auto; /* Only vertical scroll is needed */
+    margin-top: 0.5rem;
+    padding-right: 0.5rem;
+}
+.inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+tr.deleted-product {
+    background-color: rgba(239, 68, 68, 0.05);
+}
+
+/* --- MOVED FROM INLINE --- */
+
+/* Hide number input spinners */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    appearance: textfield; /* Standard property for compatibility */
+    -moz-appearance: textfield; /* For Firefox */
+}
+
+/* --- Responsive Styles for Inventory Table --- */
+@media (max-width: 1023px) {
+    .inventory-table thead {
+        display: none; /* Hide table headers on mobile */
+    }
+
+    .inventory-table tbody, .inventory-table tr {
+        display: block;
+        width: 100%;
+    }
+
+    .inventory-table tr {
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin-bottom: 1rem;
+        padding: 1rem;
+        border-bottom: none !important; /* Override default border */
+    }
+
+    /* FIX: Ensure all mobile cards have a white background, even when archived */
+    .inventory-table tr.bg-red-50 {
+        background-color: white !important;
+    }
+
+    .inventory-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .inventory-table td:last-child { border-bottom: none; padding-top: 1rem; justify-content: flex-end; }
+
+    .inventory-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #4b5563;
+    }
+
+    /* FIX: Reset desktop scrolling behavior on mobile to prevent layout issues */
+    .inventory-scroll-container {
+        padding-right: 0;
+        overflow-y: visible;
+        max-height: none;
+    }
+}
